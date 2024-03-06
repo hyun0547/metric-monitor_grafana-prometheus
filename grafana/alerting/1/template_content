@@ -1,0 +1,31 @@
+{{ define "chat.print_alert" -}}
+[{{.Status}}] {{ .Labels.alertname }}
+Labels:
+{{ range .Labels.SortedPairs -}}
+- {{ .Name }}: {{ .Value }}
+{{ end -}}
+{{ if .Annotations -}}
+Annotations:
+{{ range .Annotations.SortedPairs -}}
+- {{ .Name }}: {{ .Value }}
+{{ end -}}
+{{ end -}}
+{{ if .DashboardURL -}}
+  Go to dashboard: {{ .DashboardURL }}
+{{- end }}
+{{- end }}
+
+{{ define "chat.message" -}}
+{{ if .Alerts.Firing -}}
+{{ len .Alerts.Firing }} firing alerts:
+{{ range .Alerts.Firing }}
+{{ template "chat.print_alert" . }}
+{{ end -}}
+{{ end }}
+{{ if .Alerts.Resolved -}}
+{{ len .Alerts.Resolved }} resolved alerts:
+{{ range .Alerts.Resolved }}
+{{ template "chat.print_alert" .}}
+{{ end -}}
+{{ end }}
+{{- end }}

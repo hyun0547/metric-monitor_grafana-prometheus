@@ -1,0 +1,3 @@
+{{ define "chat.title" }}
+{{ len .Alerts.Firing }} firing alerts
+{{ end }}
